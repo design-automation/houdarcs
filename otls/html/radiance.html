@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head></head>
+<body><h1>Radiance Node</h1>
+<i>Runs Radiance simulations.</i>
+
+<h2>Overview</h2>
+<p>This node allows you to run Radiance simulations from within Houdini. It assumes that Radiance is installed on your 
+computer.
+</p>
+<p>Only daylight and sunlight can be simulated. This node does not support the creation of electric lights. The nodes generates the Radiance input files, and then runs <span style="font-style: italic;">rtrace</span>
+in the background. The node then reads the results file and imports the
+data back into Houdini as attributes attached to the points and
+polygons.&nbsp;</p><p>For general information about Radiance, see <a href="http://radsite.lbl.gov/radiance/">Radsite</a> and <a href="http://www.radiance-online.org/">Radiance Online</a>.&nbsp;To install Radiance, see the <a href="https://openstudio.nrel.gov/getting-started-developer/getting-started-radiance">NREL Website</a>. There is a link to download the binaries for Windows and Mac.&nbsp;
+</p>
+<h2>Inputs</h2>
+
+<ul>
+
+<li>Input 1: The points or polygons that will be analyzed. Make sure
+that the normals are pointing in the direction in which the sensors
+should face.&nbsp;
+</li>
+
+<li>Input 2: The obstructions. These must be planar polygons.
+</li>
+
+</ul>
+
+<p>
+Note that in some cases, the same geometry may be connected to both inputs. For example, let say you have a torus. If you
+want to analyze the solar radiation incident on the surface of the torus, then you would put the torus polygons into both 
+inputs.
+</p>
+
+<h2>Parameters</h2>
+<p>The parameters for the Radiance node are as follows:</p>
+
+<h3>General</h3><p>The &nbsp;General tab allows you to specify the type of simulation to perform as well as some other general settings.</p>
+<ul>
+
+<li>Analyze: You can choose to analyze either points or polygons. If
+you select points, each point will be used as a sensor, and the values
+for polygons will then be calculated as the average of the points. If
+you select polygons, then a sensor will be placed at the cent re of
+each polygon, and the values for the points will then be calculated as
+the average of the neighboring polygons.&nbsp;</li><li>Offset: The
+sensor points are offset slightly from the geometry. (The reason for
+this is to avoid that the geometry actually blocks the sensors.) The
+offset is in the direction of the normals.</li><li>Action: You can
+choose from three actions: 1) view the sensor points/polygons, 2) view
+the obstructions, and 3) run the simulation. The first and second
+options allow you to see what is happening inside the node. For
+example, you can change materials and then look at the obstruction
+geometry.&nbsp;</li><li>Data folder: This is the folder where all the
+simulation data will be saved. The path to this folder should have no
+spaces in it. For example, "C:/my folder/" has a space and will not
+work, but "c:/my_folder" is OK. The reason for this is Radiance - it
+cannot handle spaces.</li>
+
+
+</ul>
+
+<h3>Environment</h3><p>The Environment tab allows you to specify the
+environmental conditions for the simulation, including the sky and
+ground. For defining the sky, two different methods are available.</p>
+<ul>
+
+<li>Sky colour: the colour of the sky dome.</li><li>Ground colour: the colour of the ground, which will affect how much light reflects off the ground.</li><li>Generate Sky: The sky will be generated for a specific point in time.</li><ul><li>Month, Day, Hour: &nbsp;The time for the simulation.</li><li>Latitude,
+Longitude: The location, in decimal degrees. For longitude, east of
+Greenwich is negative and west of Greenwich is positive.&nbsp;</li><li>Meridian:
+The Standard Meridian&nbsp;is the longitude of the middle of your time
+zone. To calculate it, take the difference in time between your
+location and the Greenwich, England timezone and multiply thatnumber by 15.&nbsp; </li><li>Sky type: The sky type to use for the simulation. See below for a description of each sky type.&nbsp;</li></ul><li>Cumulative
+Sky: The sky is defined by combining all the different skys for a
+specific time period. Usually the time period is the whole year. The
+skys are generated from a weather file for the specific location, and
+there is therefore no need to specify the&nbsp; location (longitude and
+latitude) since this is already captured by the weather file. The
+cumulative sky is provided as a data file with a .cal extension.</li><ul><li>Cal
+file path: The cal file to be used. This file can be generated from a
+weather file (an EnergyPlus .epw file) using the GenCumulativeSky
+program, which is part of <a href="http://diva4rhino.com/user-guide/rhino/custom-radiance-materials">Diva</a>. </li></ul>
+
+</ul><p>For the sky types, they are as follows:</p><ul><li>Sunny sky without sun. The sky distribution will correspond to a standard CIE clear day.</li><li>Sunny sky with sun. In addition to the sky distribution function, a source description of the sun is generated.</li><li>Cloudy sky. The sky distribution will correspond to a standard CIE overcast day.</li><li>Intermediate sky without sun. The sky will correspond to a standard CIE intermediate day.</li><li>Intermediate sky with sun. In addition to the sky distribution, a (somewhat subdued) sun is generated.</li><li>Uniform cloudy sky. The sky distribution will be completely uniform.</li></ul>
+
+<h3>Materials</h3><p>The Materials tab allows you to specify the
+Radiance materials that will be applied to the obstructions geometry.
+Materials can be applied based on groups. Any geometry that does not
+have a material applied through the groups will have the default
+material applied. For Radiance, there are different types of materials
+that you can create. This node supports the three basic material types:
+Plastic, Metal, and Glass. The default material is Plastic.</p>
+<ul>
+
+<li>Default Material: The settings for the default Plastic material.</li><li>Plastic
+Materials: The number of Plastic materials to define. For each
+material, you can specify the Groups to which the materials will be
+applied.</li><li>Metal Materials: The number of Metal materials to define.&nbsp;For each material, you can specify the Groups to which the materials will be applied.</li><li>Glass Materials: The number of Glass materials to define.&nbsp;For each material, you can specify the Groups to which the materials will be applied.</li></ul><p>For
+Plastic and Metal material, you can specify Colour, Specularity, and
+Roughness. For Glass, you can specify the Transmittance. In order to
+help you set materials, see the&nbsp;<a href="http://www.jaloxa.eu/resources/radiance/colour_picker.shtml">Colour Picker</a> app developed by Axel Jacobs.</p>
+
+<h3>Advanced</h3><p>The advanced &nbsp;tab contains settings for th radiance simulation. For an explanation of these settings, see the <a href="http://radsite.lbl.gov/radiance/man_html/rtrace.1.html">rtrace</a> manual.</p>
+<ul>
+
+<li>
+ab:&nbsp;Set the number of ambient bounces to&nbsp;N.&nbsp;This
+is the maximum number of diffuse bounces computed by the indirect
+calculation. A value of zero implies no indirect calculation.</li><li>aa: Set the ambient accuracy to&nbsp;acc.&nbsp;This value will approximately equal the error from indirect illuminance interpolation. A value of zero implies no interpolation.</li><li>ar:&nbsp;Set the ambient resolution to&nbsp;res.&nbsp;This
+number will determine the maximum density of ambient values used in
+interpolation. Error will start to increase on surfaces spaced closer
+than the scene size divided by the ambient resolution. The maximum
+ambient value density is the scene size times the ambient accuracy (see
+the&nbsp;&#8722;aa&nbsp;option below) divided by the ambient resolution. The scene size can be determined using&nbsp;getinfo(1)&nbsp;with the&nbsp;&#8722;d&nbsp;option on the input octree.</li><li>ad:&nbsp;Set the number of ambient divisions to&nbsp;N.&nbsp;The
+error in the Monte Carlo calculation of indirect illuminance will be
+inversely proportional to the square root of this number. A value of
+zero implies no indirect calculation.</li><li>as:&nbsp;Set the number of ambient super-samples to&nbsp;N.&nbsp;Super-samples are applied only to the ambient divisions which show a significant change.</li>
+
+</ul><br><br></body></html>
