@@ -8,14 +8,6 @@ def surface(name, material, points):
     surface = surface + "\n"
     return surface
 
-def brightfunc(cal_file_name):
-    brightfunc = "void brightfunc skyfunc\n"+\
-    "2 skybright " + cal_file_name + "\n"+\
-    "0\n"+\
-    "0\n"
-    brightfunc = brightfunc + "\n"
-    return brightfunc 
-
 def glow(name, colour):
     glow = "skyfunc glow " + name + "\n"+\
     "0\n"+\
