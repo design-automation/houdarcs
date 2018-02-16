@@ -8,6 +8,7 @@ import csv
 import string
 import datetime
 import shutil
+import subprocess
 
 import write_rad
 
@@ -109,7 +110,8 @@ class Rad(object):
         + self.sky_file_path + " " + self.rad_file_path +\
         " " + ">" + " " + oconv_file_path
         #print command + "\n\n\n"
-        os.system(command) #EXECUTE!!
+        #os.system(command) #EXECUTE!!
+        subprocess.call(command)
         self.oconv_file_path = oconv_file_path 
     
     def execute_rtrace(self, dict_parm):
@@ -130,7 +132,7 @@ class Rad(object):
             rtrace_sh_file.write("cd " + self.data_folder_path + "\n")
             rtrace_sh_file.write(command + "\n")
             rtrace_sh_file.close()
-            os.system(". " + rtrace_sh_file_path)#EXECUTE!
+            subprocess.call(". " + rtrace_sh_file_path)#EXECUTE!
         elif operating_sys == "nt":
             rtrace_bat_file_path = os.path.join(self.data_folder_path, "run_rtrace.bat")
             rtrace_bat_file = open(rtrace_bat_file_path, "w")
@@ -138,7 +140,7 @@ class Rad(object):
             rtrace_bat_file.write("cd " + self.data_folder_path + "\n")
             rtrace_bat_file.write(command + "\n")
             rtrace_bat_file.close()
-            os.system(rtrace_bat_file_path)#EXECUTE!
+            subprocess.call(rtrace_bat_file_path)#EXECUTE!
         self.result_file_path = result_file_path 
         
     def execute_rvu(self, vp, vd, dict_parm):
@@ -156,7 +158,7 @@ class Rad(object):
             " -ab " + dict_parm["ab"] + " -aa " + dict_parm["aa"] +\
             " -ar " + dict_parm["ar"] + " -ad " + dict_parm["ad"] + " -as " + dict_parm["as"] +\
             " -pe " + dict_parm["exp"] + " " + self.oconv_file_path + " &"
-        os.system(command)#EXECUTE!!
+        subprocess.call(command)#EXECUTE!!
          
     def execute_rpict(self, filename, x_resolution, y_resolution, vp, vd, dict_parm):
         if self.oconv_file_path == None:
@@ -185,10 +187,10 @@ class Rad(object):
         command4 = "pfilt -e " + dict_parm["exp"] + " " + image_file_path + "out.hdr" + " > " +\
          image_file_path + "out_filt.hdr"
 
-        os.system(command1)#EXECUTE!!  
-        os.system(command2)#EXECUTE!!  
-        os.system(command3)#EXECUTE!!  
-        os.system(command4)#EXECUTE!!  
+        subprocess.call(command1)#EXECUTE!!  
+        subprocess.call(command2)#EXECUTE!!  
+        subprocess.call(command3)#EXECUTE!!  
+        subprocess.call(command4)#EXECUTE!!  
         
     def execute_falsecolour(self,i_basefilename, l_basefilename, filename, range_max, 
                             range_division, illuminance = True):
@@ -209,7 +211,7 @@ class Rad(object):
             command = "falsecolor -ip " + l_base_image_path +\
              " -cl -n " + range_division + " -s " + range_max +\
              " -l cd/m2 > " + falsecolour_file_path + "_luminance.hdr"
-        os.system(command)#EXECUTE!!   
+        subprocess.call(command)#EXECUTE!!   
         
     def eval_rad(self):
         if self.result_file_path == None:
@@ -300,17 +302,17 @@ class Rad(object):
         bin_dir = os.path.join(daysim_dir,"bin") 
         os.chdir(bin_dir)
         command1 =  "./ds_shortterm " +  hea_file_path
-        os.system(command1)
+        subprocess.call(command1)
         command2 = "./radfiles2daysim " +  "'" + hea_file_path +"'" + " -g -m -d"
-        os.system(command2)
+        subprocess.call(command2)
         command3 = "./gen_dc " +  "'" + hea_file_path +"'"
-        os.system(command3)
+        subprocess.call(command3)
         command4 = "./ds_illum " +  "'" + hea_file_path +"'" 
-        os.system(command4)
+        subprocess.call(command4)
         command5 = "./gen_directsunlight " +  "'" + hea_file_path +"'" 
-        os.system(command5)
+        subprocess.call(command5)
         command6 = "./ds_autonomy " +  "'" + hea_file_path +"'" 
-        os.system(command6)
+        subprocess.call(command6)
         
         self.hea_result = os.path.join(heaout, "res")
         self.hea_filename = filename

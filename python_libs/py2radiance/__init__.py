@@ -9,6 +9,7 @@ import string
 import datetime
 import shutil
 import math
+import subprocess
 
 import write_rad
 
@@ -131,14 +132,14 @@ class Rad(object):
             with open(oconv_sh_file_path, "w") as oconv_sh_file:
                 oconv_sh_file.write("cd " + self.data_folder_path + "\n")
                 oconv_sh_file.write(command + "\n")
-            os.system(". " + oconv_sh_file_path)#EXECUTE!
+            subprocess.call(". " + oconv_sh_file_path)#EXECUTE!
         elif operating_sys == "nt":
             oconv_bat_file_path = os.path.join(self.data_folder_path, "run_oconv.bat")
             with open(oconv_bat_file_path, "w") as oconv_bat_file:
                 oconv_bat_file.write(self.data_folder_path[:2] + "\n")
                 oconv_bat_file.write("cd " + self.data_folder_path + "\n")
                 oconv_bat_file.write(command + "\n")
-            os.system(oconv_bat_file_path)#EXECUTE!
+            subprocess.call(oconv_bat_file_path)#EXECUTE!
     
     def execute_rtrace(self, dict_parm):
         if self.oconv_file_path == None:
@@ -157,14 +158,14 @@ class Rad(object):
             with open(rtrace_sh_file_path, "w") as rtrace_sh_file:
                 rtrace_sh_file.write("cd " + self.data_folder_path + "\n")
                 rtrace_sh_file.write(command + "\n")
-            os.system(". " + rtrace_sh_file_path)#EXECUTE!
+            subprocess.call(". " + rtrace_sh_file_path)#EXECUTE!
         elif operating_sys == "nt":
             rtrace_bat_file_path = os.path.join(self.data_folder_path, "run_rtrace.bat")
             with open(rtrace_bat_file_path, "w") as rtrace_bat_file:
                 rtrace_bat_file.write(self.data_folder_path[:2] + "\n")
                 rtrace_bat_file.write("cd " + self.data_folder_path + "\n")
                 rtrace_bat_file.write(command + "\n")
-            os.system(rtrace_bat_file_path)#EXECUTE!
+            subprocess.call(rtrace_bat_file_path)#EXECUTE!
         
     def execute_rvu(self, vp, vd, dict_parm):
         if self.oconv_file_path == None:
@@ -181,7 +182,7 @@ class Rad(object):
             " -ab " + dict_parm["ab"] + " -aa " + dict_parm["aa"] +\
             " -ar " + dict_parm["ar"] + " -ad " + dict_parm["ad"] + " -as " + dict_parm["as"] +\
             " -pe " + dict_parm["exp"] + " " + self.oconv_file_path + " &"
-        os.system(command)#EXECUTE!!
+        subprocess.call(command)#EXECUTE!!
          
     def execute_rpict(self, filename, x_resolution, y_resolution, vp, vd, dict_parm):
         if self.oconv_file_path == None:
@@ -210,10 +211,10 @@ class Rad(object):
         command4 = "pfilt -e " + dict_parm["exp"] + " " + image_file_path + "out.hdr" + " > " +\
          image_file_path + "out_filt.hdr"
 
-        os.system(command1)#EXECUTE!!  
-        os.system(command2)#EXECUTE!!  
-        os.system(command3)#EXECUTE!!  
-        os.system(command4)#EXECUTE!!  
+        subprocess.call(command1)#EXECUTE!!  
+        subprocess.call(command2)#EXECUTE!!  
+        subprocess.call(command3)#EXECUTE!!  
+        subprocess.call(command4)#EXECUTE!!  
         
     def execute_falsecolour(self,i_basefilename, l_basefilename, filename, range_max, 
                             range_division, illuminance = True):
@@ -234,7 +235,7 @@ class Rad(object):
             command = "falsecolor -ip " + l_base_image_path +\
              " -cl -n " + range_division + " -s " + range_max +\
              " -l cd/m2 > " + falsecolour_file_path + "_luminance.hdr"
-        os.system(command)#EXECUTE!!   
+        subprocess.call(command)#EXECUTE!!   
         
     def eval_rad(self):
         if self.result_file_path == None:
