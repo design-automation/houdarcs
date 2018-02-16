@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="{{ site.lang | default: "en-US" }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+{% seo %}
+
+    <link rel="stylesheet" href="{{ './assets/css/style.css' }}">
+    <meta name="viewport" content="width=device-width">
+  </head>
+  <body>
+
+    <div class="wrapper">
+
+      <header>
+
+        <h1 class="parent"><a href="http://design-automation.net">Design Automation Lab</a></h1>
+        <h1 class="title"><a href="index.html">Houdarcs</a></h1>
+
+        <p><i>
+          A library of nodes for SideFX Houdini for performing simulation and analysis of buildings and urban areas.
+        </i></p>
+
+        <div class="nav-wrapper">
+          <h1 class="nav"><a href="overview.html">Overview</a></h1>
+          <h1 class="nav"><a href="install.html">Getting Started</a></h1>
+          <h1 class="nav"><a href="examples.html">Examples</a></h1>
+          <h1 class="nav"><a href="links.html">Links</a></h1>
+        </div>
+
+      </header>
+
+      <section>
+        {{ content }}
+      </section>
+
+      <footer>
+        <p><small>Hosted on GitHub Pages</small></p>
+      </footer>
+
+    </div>
+    <script src="{{ '/assets/js/scale.fix.js' | relative_url }}"></script>
+
+
+  {% if site.google_analytics %}
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', '{{ site.google_analytics }}', 'auto');
+        ga('send', 'pageview');
+    </script>
+  {% endif %}
+  </body>
+</html>
