@@ -110,8 +110,8 @@ class Rad(object):
         + self.sky_file_path + " " + self.rad_file_path +\
         " " + ">" + " " + oconv_file_path
         #print command + "\n\n\n"
-        #os.system(command) #EXECUTE!!
-        subprocess.call(command)
+        os.system(command) #EXECUTE!!
+        #subprocess.call(command)
         self.oconv_file_path = oconv_file_path 
     
     def execute_rtrace(self, dict_parm):
