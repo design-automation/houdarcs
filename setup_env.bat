@@ -24,9 +24,21 @@ IF DEFINED PYTHON ECHO Found python here: %PYTHON%
 IF NOT DEFINED PYTHON GOTO NO_PYTHON
 
 REM *********************************************************************************
-REM Run Pthon script.
+REM Check Python version is 2
 REM *********************************************************************************
 :FOUND_PYTHON
+ECHO Checking version of Python...
+for /f "tokens=*" %%a in (
+'PYTHON --version'
+) do (
+set PYTHON_VERSION=%%a
+)
+ECHO Python version = %PYTHON_VERSION%
+IF NOT "%PYTHON_VERSION:~0,8%"=="Python 2" GOTO WRONG_PYTHON
+
+REM *********************************************************************************
+REM Run Pthon script.
+REM *********************************************************************************
 ECHO Executing Python setup script...
 ECHO.
 cd setenv
@@ -41,12 +53,27 @@ REM ****************************************************************************
 :NO_PYTHON
 ECHO ERROR: The Python executable was not found on your system. Setup failed!
 ECHO.
-ECHO If Python is already installed somwhere on your system, then you need to add
-ECHo the location of python.exe to the Windows PATH environment variable. 
-ECHO If Python is not installed, then please install Python (verion 2.6 or 2.7). 
-ECHO If you are not sure how to do this, then google it!
+ECHO Python 2.7 is already installed as part of Houdini.
+ECHo Please add the folder of python.exe to the Windows PATH environment variable. 
+ECHO The location should be soometing like this (check your version of Houdini):
+ECHO C:\Program Files\Side Effects Software\Houdini 18.0.287\python27
+ECHO
+ECHO Once Python 2.x is set up, run this setup file again.
 ECHO.
-ECHO Once Python is set up, run this setup file again.
+GOTO :END
+
+REM *********************************************************************************
+REM Python is not version 2.x
+REM *********************************************************************************
+:WRONG_PYTHON
+ECHO ERROR: Python is the wrong version. This installation requires verion 2.x.
+ECHO.
+ECHO Python 2.7 is already installed as part of Houdini.
+ECHo Please add the folder of python.exe to the Windows PATH environment variable. 
+ECHO The location should be soometing like this (check your version of Houdini):
+ECHO C:\Program Files\Side Effects Software\Houdini 18.0.287\python27
+ECHO
+ECHO Once Python 2.x is set up, run this setup file again.
 ECHO.
 GOTO :END
 
